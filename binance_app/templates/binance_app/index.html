@@ -1,0 +1,595 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script>
+        function toggleDates() {
+            var historyDropdown = document.getElementById("history-dropdown");
+            var startDate = document.getElementById("start-date");
+            var endDate = document.getElementById("end-date");
+
+            if (historyDropdown.value === "non_history") {
+                startDate.style.display = "none";
+                endDate.style.display = "none";
+            } else {
+                startDate.style.display = "block";
+                endDate.style.display = "block";
+            }
+        }
+    </script>
+</head>
+<body>
+    <form method="post" >
+        {% csrf_token %}
+        <label for="client-name">Client Name:</label>
+        <input type="text" id="client-name" name="client_name" required><br>
+
+        <label for="account-name">Account Name:</label>
+        <input type="text" id="account-name" name="account_name" required><br>
+
+        <label for="history-dropdown">History Type:</label>
+        <select id="history-dropdown" name="history_type" onchange="toggleDates()">
+            <option value="history">History</option>
+            <option value="non_history">Non History</option>
+        </select><br>
+
+        <div id="start-date">
+            <label for="start-date-input">Start Date:</label>
+            <input type="date" id="start-date-input" name="start_date"><br>
+        </div>
+
+        <div id="end-date">
+            <label for="end-date-input">End Date:</label>
+            <input type="date" id="end-date-input" name="end_date"><br>
+        </div>
+
+        <label for="spot-funding-dropdown">Type:</label>
+        <select id="spot-funding-dropdown" name="type">
+            <option value="spot">Spot</option>
+            <option value="funding">Funding</option>
+        </select><br>
+
+        <button type="submit">Submit</button>
+    </form>
+    
+    {% if error %}
+            <div class="alert alert-danger mt-3">{{ error }}</div>
+        {% endif %}
+
+        {% if data %}
+            <h3 class="mt-5">Account Balances</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Free</th>
+                        <th>Locked</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in data %}
+                        <tr>
+                            <td>{{ item.asset }}</td>
+                            <td>{{ item.free }}</td>
+                            <td>{{ item.locked }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type=text], input[type=date], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button[type=submit] {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type=submit]:hover {
+            background-color: #0056b3;
+        }
+
+        .alert {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script>
+        function toggleDates() {
+            var historyDropdown = document.getElementById("history-dropdown");
+            var startDate = document.getElementById("start-date");
+            var endDate = document.getElementById("end-date");
+
+            if (historyDropdown.value === "non_history") {
+                startDate.style.display = "none";
+                endDate.style.display = "none";
+            } else {
+                startDate.style.display = "block";
+                endDate.style.display = "block";
+            }
+        }
+
+        window.onload = function() {
+            toggleDates(); // Set initial state based on the default value
+        };
+
+        document.getElementById('myForm').addEventListener('submit', function(event) {
+        document.getElementById('download_balance').style.display = 'block';
+    });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-4 mb-4">Client Form</h2>
+        <form id="myform" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="client-name">Client Name:</label>
+                <input type="text" id="client-name" name="client_name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="account-name">Account Name:</label>
+                <input type="text" id="account-name" name="account_name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="history-dropdown">History Type:</label>
+                <select id="history-dropdown" name="history_type" class="form-control" onchange="toggleDates()">
+                    <option value="history">History</option>
+                    <option value="non_history">Non History</option>
+                </select>
+            </div>
+
+            <div id="start-date" class="form-group">
+                <label for="start-date-input">Start Date:</label>
+                <input type="date" id="start-date-input" name="start_date" class="form-control">
+            </div>
+
+            <div id="end-date" class="form-group">
+                <label for="end-date-input">End Date:</label>
+                <input type="date" id="end-date-input" name="end_date" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="spot-funding-dropdown">Wallet:</label>
+                <select id="spot-funding-dropdown" name="wallet" class="form-control">
+                    <option value="spot">Spot</option>
+                    <option value="funding">Funding</option>
+                </select>
+            </div>
+
+            <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        
+        {% if error %}
+            <div class="alert alert-danger mt-3">{{ error }}</div>
+        {% endif %}
+
+        
+        <div class="mt-4" id="download_balance">
+            <label>Download your balances file:</label>
+            <a href="{% url 'download_balances' %}" class="btn btn-success">Download</a>
+        </div>
+        
+    </div>
+</body>
+</html> -->
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f8f9fa; /* Fallback color */
+            background-image: url('C:\\Users\\vasug\\OneDrive\\Desktop\\BinanceRealTimeProject - Copy\\binance_app\\templates\\binance_app\\surreal-dreamlike-landscape-wallpaper-purple-tones.jpg'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.5s ease; /* Smooth transition */
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        input[type="text"], input[type="date"], select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+        }
+
+        input[type="text"]:focus, input[type="date"]:focus, select:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
+
+        button {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #download-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #download-section label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #download-section .btn {
+            background-color: #28a745;
+        }
+
+        #download-section .btn:hover {
+            background-color: #218838;
+        }
+
+        /* Hide date inputs initially */
+        #start-date, #end-date {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <form method="post" action="{% url 'index' %}">
+        {% csrf_token %}
+        <label for="client-name">Client Name:</label>
+        <input type="text" id="client-name" name="client_name" required><br><br>
+
+        <label for="account-name">Account Name:</label>
+        <input type="text" id="account-name" name="account_name" required><br><br>
+
+        <label for="history-dropdown">History:</label>
+        <select id="history-dropdown" name="history" onchange="toggleDates()" required>
+            <option value="history">History</option>
+            <option value="non-history">Non-History</option>
+        </select><br><br>
+
+        <div id="start-date">
+            <label for="start-date-input">Start Date:</label>
+            <input type="date" id="start-date-input" name="start_date"><br><br>
+        </div>
+
+        <div id="end-date">
+            <label for="end-date-input">End Date:</label>
+            <input type="date" id="end-date-input" name="end_date"><br><br>
+        </div>
+
+        <label for="type-dropdown">Wallet:</label>
+        <select id="type-dropdown" name="wallet" required>
+            <option value="spot">Spot</option>
+            <option value="funding">Funding</option>
+        </select><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if show_download %}
+    <div id="download-section">
+        <label>Download your balances:</label>
+        <form method="post" action="{% url 'download_balances' %}">
+            {% csrf_token %}
+            <input type="hidden" name="account_name" value="{{ request.POST.account_name}}">
+            <button type="submit">Download</button>
+        </form>        
+    </div>
+    {% endif %}
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f8f9fa; /* Fallback color */
+            background-image: url('C:\\Users\\vasug\\OneDrive\\Desktop\\BinanceRealTimeProject - Copy\\binance_app\\templates\\binance_app\\surreal-dreamlike-landscape-wallpaper-purple-tones.jpg'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.5s ease; /* Smooth transition */
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        input[type="text"], input[type="date"], select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+        }
+
+        input[type="text"]:focus, input[type="date"]:focus, select:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
+
+        button {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #download-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #download-section label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #download-section .btn {
+            background-color: #28a745;
+        }
+
+        #download-section .btn:hover {
+            background-color: #218838;
+        }
+
+        /* Hide date inputs initially */
+        #start-date, #end-date {
+            display: block;
+        }
+    </style>
+    <script>
+        function toggleDates() {
+            var historyDropdown = document.getElementById("history-dropdown");
+            var startDateDiv = document.getElementById("start-date");
+            var endDateDiv = document.getElementById("end-date");
+
+            if (historyDropdown.value === "non-history") {
+                startDateDiv.style.display = "none";
+                endDateDiv.style.display = "none";
+            } else {
+                startDateDiv.style.display = "block";
+                endDateDiv.style.display = "block";
+            }
+        }
+
+        function populateSymbolDropdown(symbols) {
+    var symbolDropdown = document.getElementById("symbol");
+
+    // Clear existing options (if any)
+    symbolDropdown.innerHTML = '';
+
+    // Add default option
+    var defaultOption = document.createElement("option");
+    defaultOption.text = 'Select Symbol';
+    defaultOption.value = '';
+    symbolDropdown.appendChild(defaultOption);
+
+    // Add symbols as options
+    symbols.forEach(function(symbol) {
+        var option = document.createElement("option");
+        option.text = symbol;
+        option.value = symbol;
+        symbolDropdown.appendChild(option);
+    });
+}
+
+// Fetch symbols from Django backend
+async function fetchSymbols() {
+    try {
+        const response = await fetch('/get_binance_symbols/');
+        if (!response.ok) {
+            throw new Error('Failed to fetch symbols');
+        }
+        const data = await response.json();
+        if (data.symbols) {
+            populateSymbolDropdown(data.symbols);
+        } else {
+            console.error('Error fetching symbols:', data.error);
+        }
+    } catch (error) {
+        console.error('Error fetching symbols:', error);
+    }
+}
+
+// Call function to fetch symbols and populate dropdown when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    fetchSymbols();
+});
+
+// Optionally, if the endpoint dropdown changes dynamically
+function toggleSymbolDropdown() {
+    var endpointDropdown = document.getElementById("type-dropdown");
+    var symbolDropdown = document.getElementById("symbol-dropdown");
+
+    if (endpointDropdown.value === "recent_trades") {
+        symbolDropdown.style.display = "block";
+        fetchSymbols();  // Call function to fetch symbols
+    } else {
+        symbolDropdown.style.display = "none";
+    }
+}
+
+    </script>
+</head>
+<body>
+    <form method="post" action="{% url 'index' %}">
+        {% csrf_token %}
+        <label for="client-name">Client Name:</label>
+        <input type="text" id="client-name" name="client_name" required><br><br>
+
+        <label for="account-name">Account Name:</label>
+        <input type="text" id="account-name" name="account_name" required><br><br>
+
+        <label for="history-dropdown">History:</label>
+        <select id="history-dropdown" name="history" onchange="toggleDates()" required>
+            <option value="history">History</option>
+            <option value="non-history">Non-History</option>
+        </select><br><br>
+
+        <div id="start-date">
+            <label for="start-date-input">Start Date:</label>
+            <input type="date" id="start-date-input" name="start_date"><br><br>
+        </div>
+
+        <div id="end-date">
+            <label for="end-date-input">End Date:</label>
+            <input type="date" id="end-date-input" name="end_date"><br><br>
+        </div>
+
+        <label for="type-dropdown">Endpoint:</label>
+        <select id="type-dropdown" name="endpoint" onchange="toggleSymbolDropdown()" required>
+            <option value="spot">Spot</option>
+            <option value="funding">Funding</option>
+            <!-- <option value="server_time">Server Time</option> -->
+            <!-- <option value="exchange_info">Exchange Info</option> -->
+            <!-- <option value="order_book">Order Book</option> -->
+            <option value="recent_trades">Recent Trades</option>
+            <!-- <option value="24hr_ticker">24hr Ticker</option>
+            <option value="klines">Klines</option>
+            <option value="average_price">Average Price</option>
+            <option value="price">Price</option>
+            <option value="account_status">Account Status</option>
+            <option value="system_status">System Status</option>
+            <option value="trade_fee">Trade Fee</option>
+            <option value="withdraw_fee">Withdraw Fee</option>
+            <option value="deposit_address">Deposit Address</option> -->
+        </select><br><br>
+
+        <div id="symbol-dropdown" style="display: none;">
+            <label for="symbol">Symbol:</label>
+            <select id="symbol" name="symbol">
+                <!-- Options will be dynamically populated using JavaScript -->
+            </select><br><br>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if show_download %}
+    <div id="download-section">
+        <label>Download your balances:</label>
+        <form method="post" action="{% url 'download_balances' %}">
+            {% csrf_token %}
+            <input type="hidden" name="account_name" value="{{ request.POST.account_name }}">
+            <input type="hidden" name="endpoint" value="{{ request.POST.endpoint }}">
+            <button type="submit">Download</button>
+        </form>        
+    </div>
+    {% endif %}
+</body>
+</html>
