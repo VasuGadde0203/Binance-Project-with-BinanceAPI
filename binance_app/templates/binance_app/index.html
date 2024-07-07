@@ -1,0 +1,71 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Page</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'binance_app/css/style.css' %}">
+    <script src="{% static 'binance_app/js/scripts.js' %}"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    
+   
+</head>
+<body>
+    <form method="post" action="{% url 'index' %}">
+        {% csrf_token %}
+        <label for="client-name">Client Name:</label>
+        <input type="text" id="client-name" name="client_name" required><br><br>
+
+        <label for="account-name">Account Name:</label>
+        <input type="text" id="account-name" name="account_name" required><br><br>
+
+        <label for="history-dropdown">History:</label>
+        <select id="history-dropdown" name="history" onchange="toggleDates()" required>
+            <option value="history">History</option>
+            <option value="non-history">Non-History</option>
+        </select><br><br>
+
+        <div id="start-date">
+            <label for="start-date-input">Start Date:</label>
+            <input type="date" id="start-date-input" name="start_date"><br><br>
+        </div>
+
+        <div id="end-date">
+            <label for="end-date-input">End Date:</label>
+            <input type="date" id="end-date-input" name="end_date"><br><br>
+        </div>
+
+        <label for="type-dropdown">Endpoint:</label>
+        <select id="type-dropdown" name="endpoint" onchange="toggleSymbolDropdown()" required>
+            <option value="spot">Spot</option>
+            <option value="funding">Funding</option>
+            
+            <option value="recent_trades">Recent Trades</option>
+           
+        </select><br><br>
+
+        <div id="symbol-dropdown" style="display: none;">
+            <label for="symbol">Symbol:</label>
+            <select id="symbol" name="symbol">
+                <!-- Options will be dynamically populated using JavaScript -->
+            </select><br><br>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if show_download %}
+    <div id="download-section">
+        <label>Download your balances:</label>
+        <form method="post" action="{% url 'download_balances' %}">
+            {% csrf_token %}
+            <input type="hidden" name="account_name" value="{{ request.POST.account_name }}">
+            <input type="hidden" name="endpoint" value="{{ request.POST.endpoint }}">
+            <button type="submit">Download</button>
+        </form>        
+    </div>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f8f9fa; /* Fallback color */
+    background-image: url('C:\\Users\\vasug\\OneDrive\\Desktop\\BinanceRealTimeProject - Copy\\binance_app\\templates\\binance_app\\surreal-dreamlike-landscape-wallpaper-purple-tones.jpg'); /* Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image 0.5s ease; /* Smooth transition */
+}
+
+form {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+input[type="text"], input[type="date"], select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+}
+
+input[type="text"]:focus, input[type="date"]:focus, select:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+}
+
+button {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#download-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#download-section label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#download-section .btn {
+    background-color: #28a745;
+}
+
+#download-section .btn:hover {
+    background-color: #218838;
+}
+
+/* Hide date inputs initially */
+#start-date, #end-date {
+    display: block;
+}
